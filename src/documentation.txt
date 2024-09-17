@@ -1,0 +1,410 @@
+HCX UI Core Component Library Documentation
+Overview
+
+The HCX UI Core Component Library provides reusable UI components for claim processing applications. Each component is built using React and Tailwind CSS, ensuring a modern and flexible user interface. Below is a detailed overview of each component, including descriptions of the props for proper usage.
+1. Auth Component
+
+The Auth component encompasses authentication functionalities, including forms for user login and registration.
+Files:
+
+    AuthForm.tsx
+    AuthInput.tsx
+    PasswordInput.tsx
+
+Use Case
+
+The Auth component is used to handle user authentication processes. This includes user login and registration, with functionalities for managing form inputs and validation.
+Implementation Details
+
+    AuthForm.tsx
+        Features:
+            Combines authentication inputs into a single form.
+            Handles form submission and validation.
+        Props:
+            onSubmit: (formData: AuthFormData) => void - Callback function to handle form submission.
+            isLoading: boolean - Indicates if the form is submitting.
+            error: string - Error message to display.
+            children: React.ReactNode - The input fields and buttons to be rendered within the form.
+        Key Functions:
+            Manages form state.
+            Validates input fields and handles error messages.
+
+    AuthInput.tsx
+        Features:
+            Provides reusable input fields for authentication forms.
+            Configurable for text and password inputs.
+        Props:
+            label: string - Label for the input field.
+            type: string - Type of input (e.g., text, password).
+            value: string - Current value of the input.
+            onChange: (e: React.ChangeEvent<HTMLInputElement>) => void - Callback for input change events.
+            error: string - Error message to display for validation.
+        Key Functions:
+            Manages input changes and validation.
+
+    PasswordInput.tsx
+        Features:
+            Provides a password field with visibility toggling.
+        Props:
+            label: string - Label for the password field.
+            value: string - Current value of the password input.
+            onChange: (e: React.ChangeEvent<HTMLInputElement>) => void - Callback for password input changes.
+            error: string - Error message to display for validation.
+        Key Functions:
+            Toggles password visibility.
+            Handles password input changes and validation.
+
+2. BackButton Component
+
+Path: components/BackButton/BackButton.tsx
+Use Case
+
+The BackButton component is used to navigate users back to the previous page or state in the application.
+Implementation Details
+
+    Features:
+        Navigation functionality.
+        Customizable styling.
+    Props:
+        className?: string - Additional CSS classes for styling.
+        onClick?: () => void - Optional callback for handling click events.
+        disableDebounce?: boolean - Disables debounce functionality if set to true.
+        customHistory?: () => void - Custom history function for navigation.
+    Key Functions:
+        Manages navigation based on user interaction.
+
+3. CursorConnect Component
+
+Path: components/CursorConnect/CursorConnect.tsx
+Use Case
+
+The CursorConnect component displays tooltips or additional information when hovering over elements and allows toggling the visibility of the tooltip.
+Implementation Details
+
+    Features:
+        Tooltip display on hover.
+        Visibility toggle with a button.
+    Props:
+        description: string - The text to display within the tooltip.
+        children: React.ReactNode - The element that triggers the tooltip.
+        className?: string - Additional CSS classes for styling.
+        toggleVisibilityOnClick?: boolean - Toggles tooltip visibility on click if set to true.
+    Key Functions:
+        Manages tooltip display and visibility.
+
+4. ForgotPassword Component
+
+The ForgotPassword component provides user interfaces for managing password reset processes.
+Files:
+
+    ForgotPassword.tsx
+    ResetPassword.tsx
+
+Use Case
+
+The ForgotPassword component is used for password recovery and reset processes, allowing users to request and set a new password.
+Implementation Details
+
+    ForgotPassword.tsx
+        Features:
+            Form for requesting a password reset.
+            Input for email or username.
+        Props:
+            onSubmit: (email: string) => void - Callback function to handle form submission.
+            isLoading: boolean - Indicates if the form is submitting.
+            error: string - Error message to display.
+            email: string - Current value of the email input.
+            onChange: (e: React.ChangeEvent<HTMLInputElement>) => void - Callback for email input changes.
+        Key Functions:
+            Manages form submission and validation.
+            Handles error messages and user feedback.
+
+    ResetPassword.tsx
+        Features:
+            Form for setting a new password after a reset request.
+            Inputs for new password and confirmation.
+        Props:
+            onSubmit: (password: string, confirmPassword: string) => void - Callback function to handle form submission.
+            isLoading: boolean - Indicates if the form is submitting.
+            error: string - Error message to display.
+            password: string - Current value of the password input.
+            confirmPassword: string - Current value of the confirm password input.
+            onChange: (e: React.ChangeEvent<HTMLInputElement>) => void - Callback for input changes.
+        Key Functions:
+            Manages password reset submission.
+            Validates new password and confirmation.
+
+5. Notifications Component
+
+The Notifications component handles the display and management of notifications within the application.
+Files:
+
+    Notification.tsx
+    Notification.types.ts
+    NotificationList.tsx
+    NotificationSection.tsx
+
+Use Case
+
+The Notifications component provides a unified interface for displaying notifications, managing a list of notifications, and handling notification-related states.
+Implementation Details
+
+    Notification.tsx
+        Features:
+            Displays individual notification content.
+            Customizable styling and behavior.
+        Props:
+            type: 'success' | 'error' | 'info' | 'warning' - Type of notification.
+            message: string - The message to display.
+            onClose?: () => void - Optional callback for dismissing the notification.
+            className?: string - Additional CSS classes for styling.
+        Key Functions:
+            Manages the display and dismissal of individual notifications.
+
+    Notification.types.ts
+        Features:
+            Defines types and interfaces for notifications.
+            Provides type definitions for notification data and props.
+        Props: (This file only contains types and interfaces, no runtime props)
+        Key Functions:
+            Ensures type safety and consistency for notification-related components.
+
+    NotificationList.tsx
+        Features:
+            Renders a list of notifications.
+            Handles loading and empty states.
+        Props:
+            notifications: Notification[] - Array of notification objects.
+            loading: boolean - Indicates if notifications are loading.
+            emptyMessage?: string - Message to display if there are no notifications.
+            onDismiss: (id: string) => void - Callback to dismiss a notification by ID.
+        Key Functions:
+            Manages and displays a collection of notifications.
+
+    NotificationSection.tsx
+        Features:
+            Provides layout and structure for the NotificationList.
+            Manages the display of notifications within a section.
+        Props:
+            title: string - Title of the notification section.
+            children: React.ReactNode - The NotificationList component or other content to be rendered within the section.
+            className?: string - Additional CSS classes for styling.
+        Key Functions:
+            Provides a container and layout for notifications.
+
+6. QrCodeScanner Component
+
+Path: components/QrCodeScanner/QrCodeScanner.tsx
+Use Case
+
+The QrCodeScanner component provides functionality for scanning QR codes using a device's camera.
+Implementation Details
+
+    Features:
+        QR code scanning functionality.
+        Callback functions for scan events.
+    Props:
+        onScanSuccess: (data: string) => void - Callback for successful scans.
+        onScanError?: (error: Error) => void - Optional callback for handling scan errors.
+        onScanStart?: () => void - Optional callback for when scanning starts.
+        onScanStop?: () => void - Optional callback for when scanning stops.
+        className?: string - Additional CSS classes for styling.
+        facingMode?: 'user' | 'environment' - Camera facing mode (front or rear).
+    Key Functions:
+        Manages QR code scanning.
+        Provides feedback for scan success, errors, and start/stop events.
+
+7. ReferenceDropdown Component
+
+Path: components/ReferenceDropdown/ReferenceDropdown.tsx
+Use Case
+
+The ReferenceDropdown component is used for displaying a dropdown menu of reference options, allowing users to select from a list of items.
+Implementation Details
+
+    Features:
+        Dropdown menu with selectable options.
+        Customizable styling and behavior.
+    Props:
+        options: Array<{ value: string; label: string }> - Array of options to display in the dropdown.
+        onSelect: (value: string) => void - Callback for when an option is selected.
+        placeholder?: string - Placeholder text for the dropdown.
+        selectedValue?: string - Currently selected value.
+        className?: string - Additional CSS classes for styling.
+    Key Functions:
+        Manages dropdown menu display and selection.
+
+8. SearchPatientBar Component
+
+Path: components/SearchPatientBar/SearchPatientBar.tsx
+Use Case
+
+The SearchPatientBar component provides an interface for searching patients by mobile number.
+Implementation Details
+
+    Features:
+        Input field for mobile number with validation.
+        Search button with conditional styling and text.
+    Props:
+        onSearch: (mobileNumber: string) => void - Callback for handling search actions.
+        isLoading: boolean - Indicates if a search is in progress.
+        error: string - Error message to display for invalid inputs.
+        mobileNumber: string - Current value of the mobile number input.
+        onChange: (e: React.ChangeEvent<HTMLInputElement>) => void - Callback for input changes.
+        className?: string - Additional CSS classes for styling.
+    Key Functions:
+        Handles search actions and input changes.
+        Manages loading and validation states.
+
+9. SupportingDocument Component
+
+Path: components/SupportingDocument/SupportingDocument.tsx
+Use Case
+
+The SupportingDocument component allows users to upload and manage supporting documents for claims.
+Implementation Details
+
+    Features:
+        Document type selection.
+        File upload and display.
+        Error handling and file management.
+    Props:
+        onUpload: (file: File) => void - Callback for handling file uploads.
+        onRemove: (fileName: string) => void - Callback for removing uploaded files.
+        allowedFileTypes: string[] - Array of allowed file types.
+        maxFileSize?: number - Maximum file size allowed for upload.
+        uploadedFiles: Array<{ name: string; url: string }> - Array of currently uploaded files.
+        className?: string - Additional CSS classes for styling.
+    Key Functions:
+        Manages document selection, upload, and display.
+        Handles file validation and error messaging.
+
+10. BasicUIComponent
+
+Path: components/BasicUIComponent/BasicUIComponent.tsx
+
+Use Case
+
+The BasicUIComponent provides a simple, reusable UI element that can be easily customized and extended for various use cases in your application. It serves as a foundational component for building other UI elements by offering essential styling and structure.
+
+Implementation Details
+
+    Features:
+        Basic styling and structure for UI elements.
+        Customizable through props for different use cases.
+
+    Props:
+        className?: string - Optional additional CSS classes for custom styling.
+        onClick?: () => void - Optional callback for handling click events.
+        disabled?: boolean - Optional prop to disable the component's interaction.
+        label?: string - Optional label text for the component.
+
+    Key Functions:
+        Provides a base structure for UI elements with default styling.
+        Allows customization through additional CSS classes and optional props.
+
+11. API Client Component
+
+path: components/ApiClient/ApiClient.ts
+
+Purpose: Provides methods for generating authentication tokens with Keycloak and performing data operations with the Registry API.
+Key Functions
+
+    Keycloak API Client
+        Functionality: Handles authentication with Keycloak to generate access tokens.
+        Usage:
+            generateToken:
+                Description: Requests an access token from Keycloak using user credentials.
+                Parameters:
+                    username: string | undefined - User’s username.
+                    password: string | undefined - User’s password.
+                Returns: Promise<string> - The access token.
+                Implementation:
+                    Constructs a URL-encoded request body and appropriate headers.
+                    Sends a POST request to Keycloak’s token endpoint.
+                    Returns the access token if successful, or throws an error if not.
+
+    Registry API Client
+        Functionality: Interacts with the Registry API to perform data operations such as retrieving participant details.
+        Usage:
+            getParticipantByCode:
+                Description: Searches for participant details using a participant code.
+                Parameters:
+                    code: any - The participant code to search for.
+                Returns: Promise<any> - Participant details.
+                Implementation:
+                    Constructs a request payload with the search criteria.
+                    Sends a POST request to the Registry API, including the Bearer token in the headers for authorization.
+                    Returns the search results if successful, or throws an error if not.
+
+    Combined API Client
+        Functionality: Creates an integrated client for both Keycloak and Registry APIs.
+        Usage:
+            createApiClient:
+                Description: Initializes and returns a client object with methods for interacting with both Keycloak and Registry APIs.
+                Parameters:
+                    keycloakBaseUrl: string - Base URL for Keycloak API.
+                    registryBaseUrl: string - Base URL for Registry API.
+                Returns: An object containing methods for both Keycloak and Registry API interactions.
+                Implementation:
+                    Instantiates the Keycloak client for token generation.
+                    Provides a method to create a Registry API client with a provided token, merging it with the Keycloak client methods.
+
+Implementation Details
+
+    Keycloak Token Generation:
+        Headers:
+            Content-Type: application/x-www-form-urlencoded - Indicates the content type of the request body.
+        Body:
+            Includes client_id, username, password, and grant_type parameters for authentication.
+
+    Registry API Interaction:
+        Payload:
+            Contains the search criteria for participant data.
+        Headers:
+            Authorization: Bearer ${token} - Authenticates the request using the provided token.
+
+12. GenerateOutgoingRequest Component
+
+path: components/GenerateOutgoingRequest/GenerateOutgoingRequest.tsx
+
+Purpose: Manages API requests and displays a button for initiating the request. Handles loading states and error notifications.
+Props
+
+    url (string): The endpoint URL for the API request. This is appended to the base URL defined in the environment variable.
+    payload (object): The data to be sent with the POST request.
+    onSuccess ((data: any) => void, optional): Callback function to handle successful responses.
+    onError ((error: any) => void, optional): Callback function to handle errors.
+
+Key Functions
+
+    handleRequest
+        Description: Handles the API request process.
+        Implementation:
+            Sets the loading state to true when the request starts.
+            Sends a POST request to the specified endpoint using axios.
+            Sets the loading state to false after receiving a response or encountering an error.
+            Calls the onSuccess callback if the response status is 200 and provides the response data.
+            Calls the onError callback and displays an error toast message if an error occurs.
+
+    Button
+        Description: A button that initiates the API request when clicked.
+        Behavior:
+            Displays "Processing..." when the request is in progress (i.e., when loading is true).
+            Displays "Submit Request" when not loading.
+            Disables the button while the request is in progress.
+
+Implementation Details
+
+    Environment Variable:
+        Uses process.env.hcx_mock_service as the base URL for the API request.
+    Loading State:
+        Managed using React's useState hook to show or hide loading indicators.
+    Error Handling:
+        Errors are logged to the console and an error toast message is displayed using react-toastify.
+
+Conclusion
+
+This documentation provides an overview of each core component in the HCX UI Core Component Library, along with detailed descriptions of the props required for each component. These props ensure that users can properly configure and customize each component according to their needs.
+
+For more detailed implementation and customization, refer to the individual component files and their associated props and functionalities.
