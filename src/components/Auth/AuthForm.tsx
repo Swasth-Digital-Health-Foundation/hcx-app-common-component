@@ -21,6 +21,7 @@ interface AuthFormProps {
   participantCode?: string; // Optional initial value for participant code
 }
 
+// Main AuthForm component definition
 const AuthForm: React.FC<AuthFormProps> = ({
   title,
   submitButtonLabel,
@@ -32,86 +33,92 @@ const AuthForm: React.FC<AuthFormProps> = ({
   otpSubmit,
   participantCode,
 }) => {
-  // State variables for form inputs and validation status
-  const [username, setUsername] = useState<string>(participantCode || ""); // Participant code or initial value
-  const [password, setPassword] = useState<string>(""); // Password input
-  const [mobileNumber, setMobileNumber] = useState<string>(""); // Mobile number for OTP
-  const [loading, setLoading] = useState<boolean>(false); // Loading state for submit button
-  const [isValidEmail, setIsValidEmail] = useState<boolean>(true); // Validation state for email (not used currently)
-  const [isValidMobile, setIsValidMobile] = useState<boolean>(true); // Validation state for mobile number
+  // State management for form fields and validation
+  const [username, setUsername] = useState<string>(participantCode || "");
+  const [password, setPassword] = useState<string>("");
+  const [mobileNumber, setMobileNumber] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [isValidEmail, setIsValidEmail] = useState<boolean>(true);
+  const [isValidMobile, setIsValidMobile] = useState<boolean>(true);
   const [isValidParticipantCode, setIsValidParticipantCode] =
-    useState<boolean>(true); // Validation state for participant code
-  const navigate = useNavigate(); // Hook to programmatically navigate
+    useState<boolean>(true);
+  const navigate = useNavigate();
 
-  // Validate email format
+  // Utility function to validate email format
   const validateEmail = (email: string): boolean =>
     /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
 
-  // Validate mobile number format (10 digits)
+  // Utility function to validate mobile number (10 digits)
   const validateMobile = (mobile: string): boolean => /^\d{10}$/.test(mobile);
 
-  // Validate participant code format
+  // Utility function to validate participant code format
   const validateParticipantCode = (code: string): boolean =>
     /^hosp_demoop_\d{8}@swasth-hcx-dev$/.test(code);
 
-  // Handle form submission
+  // Handles form submission based on whether OTP or login is required
   const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
-    e.preventDefault(); // Prevent default form submission behavior
-    setLoading(true); // Set loading state to true while submitting
+    e.preventDefault(); // Prevents page reload on form submission
+    setLoading(true); // Shows loading state
+
     try {
       if (isOTP && otpSubmit) {
-        // Handle OTP submission if isOTP is true
+        // Handle OTP submission when isOTP is true
         if (validateMobile(mobileNumber)) {
-          await otpSubmit(mobileNumber); // Submit OTP
+          await otpSubmit(mobileNumber); // Calls the otpSubmit function
         } else {
-          toast.error("Invalid mobile number format!"); // Show error if mobile number is invalid
-          setIsValidMobile(false); // Set validation state to false
+          toast.error("Invalid mobile number format!"); // Error for invalid mobile number
+          setIsValidMobile(false);
         }
       } else {
-        // Handle standard form submission
-        await onSubmit({ username, password }); // Submit username and password
-        toast.success("Operation successful!"); // Show success message
-        navigate("/home"); // Redirect to home page upon successful submission
+        // Handle regular username/password submission
+        await onSubmit({ username, password }); // Calls the onSubmit function
+        toast.success("Operation successful!"); // Success toast message
+        navigate("/home"); // Redirect to home page after successful login
       }
     } catch (error) {
-      toast.error("Please check the input details!"); // Show error if submission fails
+      toast.error("Please check the input details!"); // Error toast message
     }
-    setLoading(false); // Set loading state to false after submission
+    setLoading(false); // Removes loading state
   };
 
-  // Handle changes in the mobile number input
+  // Handles mobile number input changes with validation
   const handleMobileNumberChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ): void => {
     const inputValue = e.target.value;
-    setIsValidMobile(validateMobile(inputValue)); // Validate mobile number on change
-    setMobileNumber(inputValue); // Update mobile number state
+    setIsValidMobile(validateMobile(inputValue)); // Validates mobile number
+    setMobileNumber(inputValue); // Sets mobile number state
   };
 
   return (
-    <div className="flex h-screen w-full">
+    <div className="flex flex-col md:flex-row h-screen w-full">
       {/* Left side: Branding and banner */}
-      <div className="flex flex-col items-center justify-center w-1/2 bg-gray-100 p-8">
+      <div className="flex flex-col items-center justify-center md:w-1/2 w-full bg-gray-100 p-4 md:p-8">
         <a className="mb-5.5" href="#">
-          <img className="w-48" src={logo} alt={altText} /> {/* Logo image */}
+          {/* Company logo */}
+          <img className="w-32 md:w-48" src={logo} alt={altText} />
         </a>
-        <p className="font-bold text-xl text-black">HCX Provider App</p>
-        <img className="mt-5 block" src={banner} alt="Banner" />{" "}
-        {/* Banner image */}
+        <p className="font-bold text-lg md:text-xl text-black">
+          HCX Provider App
+        </p>
+        {/* Optional banner image */}
+        <img className="mt-5 block" src={banner} alt="Banner" />
       </div>
 
       {/* Right side: Auth form */}
-      <div className="flex flex-col items-center justify-center w-1/2 p-8">
+      <div className="flex flex-col items-center justify-center md:w-1/2 w-full p-4 md:p-8">
         <div className="w-full max-w-md">
-          <h2 className="mb-9 text-2xl font-bold text-black text-center">
-            {title} {/* Form title */}
+          {/* Form title */}
+          <h2 className="mb-6 md:mb-9 text-xl md:text-2xl font-bold text-black text-center">
+            {title}
           </h2>
           <form onSubmit={handleSubmit}>
+            {/* Display username/password fields when OTP is not required */}
             {!isOTP ? (
               <>
-                {/* Participant code and password inputs */}
+                {/* Username input (Participant Code) */}
                 <AuthInput
                   label="Participant Code"
                   value={username}
@@ -119,17 +126,19 @@ const AuthForm: React.FC<AuthFormProps> = ({
                     setUsername(e.target.value);
                     setIsValidParticipantCode(
                       validateParticipantCode(e.target.value)
-                    ); // Validate participant code on change
+                    ); // Validates participant code
                   }}
                   placeholder="Enter your participant code"
                 />
+                {/* Password input */}
                 <PasswordInput
                   label="Password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)} // Update password state on change
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </>
             ) : (
+              // Display mobile number input when OTP is required
               <div className="mb-4">
                 <label className="mb-2.5 block font-medium text-black">
                   Enter Mobile Number
@@ -140,9 +149,10 @@ const AuthForm: React.FC<AuthFormProps> = ({
                     placeholder="Enter your registered mobile number"
                     className={`w-full rounded-lg border ${
                       isValidMobile ? "border-stroke" : "border-red"
-                    } bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary`}
-                    onChange={handleMobileNumberChange} // Handle changes in mobile number input
+                    } bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none`}
+                    onChange={handleMobileNumberChange}
                   />
+                  {/* Error message for invalid mobile number */}
                   {!isValidMobile && (
                     <p className="text-red-500">
                       Invalid mobile number format!
@@ -151,37 +161,41 @@ const AuthForm: React.FC<AuthFormProps> = ({
                 </div>
               </div>
             )}
+
+            {/* Submit button */}
             <div className="mb-5">
               {!loading ? (
-                // Submit button
+                // Regular submit button
                 <button
                   type="submit"
                   className="w-full cursor-pointer rounded-lg bg-blue-700 text-white p-4 transition hover:bg-blue-600"
                   disabled={
-                    !(isOTP
-                      ? isValidMobile
-                      : isValidParticipantCode && password) // Disable button if form inputs are invalid
+                    !isOTP
+                      ? !(isValidParticipantCode && password)
+                      : !isValidMobile
                   }
                 >
-                  {submitButtonLabel} {/* Button label */}
+                  {submitButtonLabel}
                 </button>
               ) : (
-                // Show loading button while submitting
+                // Loading button during form submission
                 <LoadingButton />
               )}
             </div>
           </form>
+
+          {/* Links for Forgot Password and Sign Up */}
           <div className="flex flex-col items-center">
             <Link
               to="/reset-password"
               className="text-blue-700 hover:underline"
             >
-              Forgot Password? {/* Link to reset password */}
+              Forgot Password?
             </Link>
             <div className="mt-1">
               Don’t have an account?{" "}
               <Link to="/signup" className="text-blue-700 hover:underline">
-                Sign Up {/* Link to sign up page */}
+                Sign Up
               </Link>
             </div>
           </div>
